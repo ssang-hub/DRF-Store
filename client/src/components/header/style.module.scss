@@ -1,0 +1,22 @@
+.cart {
+  color: white;
+  font-size: 15px;
+  height: 40px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+.btn-user {
+  color: white;
+  font-size: 15px;
+  height: 40px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+.input_search {
+  border: none;
+  &:focus-visible {
+    outline: none;
+  }
+}

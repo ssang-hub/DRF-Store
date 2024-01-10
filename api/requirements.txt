@@ -1,0 +1,9 @@
+Django==4.2.4
+django-cors-headers==4.2.0
+djangorestframework==3.14.0
+django-filter==23.2
+pyjwt[crypto]
+python-decouple
+mysqlclient==2.1.1
+stripe
+cloudinary==1.37.0

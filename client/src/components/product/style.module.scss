@@ -1,0 +1,20 @@
+@keyframes product-hover {
+  to {
+  }
+}
+.product-name {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card {
+  transition: ease 0.5s;
+  &:hover {
+    text-decoration: none;
+    transform: translateY(-10px);
+    // animation: product-hover 0.5s ease;
+  }
+}
