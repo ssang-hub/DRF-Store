@@ -67,12 +67,23 @@ yarn start
 ```
 
 ### Building and running your application with docker
+- Clone the repository
+
+```
+git clone  https://github.com/ssang-hub/store_drf.git <project_name>
+```
 
 When you're ready, start your application by running:
 - Run server
-`docker compose up --build`.
+```
+cd api
+docker compose up --build
+```
 
 - Run client
-`docker compose up --build`.
+```
+cd client
+docker compose up --build
+```
 
 Your application will be available at http://localhost:3000.
