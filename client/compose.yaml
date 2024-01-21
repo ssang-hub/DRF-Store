@@ -15,4 +15,5 @@ services:
       - .env.example
     ports:
       - 3000:3000
+    image: sangnd1510/drf-store-client
 
