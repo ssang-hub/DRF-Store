@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import CreateCategoryModal from './createCategory';
 import clsx from 'clsx';
 import style from './style.module.scss';
 
@@ -15,19 +16,26 @@ function ManagerSidebar({ option }) {
           <i className="fas fa-tachometer-alt fa-fw me-3"></i>
           <span>Trang quản lý</span>
         </Link>
-        <Link to={'/createProduct'} className={clsx('list-group-item', 'list-group-item-action', 'py-2', 'ripple', { [style['active']]: option === 'createProduct' })}>
+        <Link
+          to={'/createProduct'}
+          className={clsx('list-group-item', 'list-group-item-action', 'py-2', 'ripple', { [style['active']]: option === 'createProduct' })}
+        >
           <i className="fas fa-chart-area fa-fw me-3"></i>
-          <span>Thêm sách</span>
+          <span>Thêm sản phẩm</span>
         </Link>
-        <Link to={'/manageOrders'} className={clsx('list-group-item', 'list-group-item-action', 'py-2', 'ripple', { [style['active']]: option === 'manageOrder' })}>
+        <Link
+          to={'/manageOrders'}
+          className={clsx('list-group-item', 'list-group-item-action', 'py-2', 'ripple', { [style['active']]: option === 'manageOrder' })}
+        >
           <i className="fas fa-lock fa-fw me-3"></i>
           <span>Quản lý đơn hàng</span>
         </Link>
-        <Link to={'#'} className="list-group-item list-group-item-action py-2 ripple">
+        <div className="list-group-item list-group-item-action py-2 ripple" data-toggle="modal" data-target="#createCategory">
           <i className="fas fa-chart-line fa-fw me-3"></i>
           <span>Thêm Thể loại</span>
-        </Link>
+        </div>
       </div>
+      <CreateCategoryModal />
     </div>
   );
 }

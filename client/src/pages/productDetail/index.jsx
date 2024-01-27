@@ -108,7 +108,14 @@ function ProductDetail() {
                     -
                   </button>
                   <div className="form-outline mb-4 " style={{ width: '70px' }}>
-                    <input type="text" className="form-control form-control-lg quantity" name="quantity" onChange={(e) => setQuantityAction(e)} value={quantity} required />
+                    <input
+                      type="text"
+                      className="form-control form-control-lg quantity"
+                      name="quantity"
+                      onChange={(e) => setQuantityAction(e)}
+                      value={quantity}
+                      required
+                    />
                   </div>
                   <button
                     className="btn btn-outline-primary mb-4 btn-plus"
@@ -133,7 +140,7 @@ function ProductDetail() {
             </div>
           </div>
           <ToastContainer />
-          <ProductInfo />
+          <ProductInfo product={product} />
           <div className="container p-0">
             <ProductReview is_authenticated={authState.isAuthenticated} product={product} />
           </div>

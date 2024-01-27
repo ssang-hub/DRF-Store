@@ -9,11 +9,12 @@ function Product({ product }) {
       <div style={{ height: '250px' }}>
         <img src={product.avatar} style={{ maxWidth: 175, maxHeight: 250 }} alt="" />
       </div>
-      <div className="d-flex ml-3">
+      <div className="d-flex ml-3 mt-3">
         <p>
-          5<AiFillStar style={{ color: 'yellow' }} />
+          {product.vote}
+          <AiFillStar style={{ color: 'yellow' }} />
         </p>
-        <p className="ml-3 text-dark">Đã bán: 5</p>
+        <p className="ml-3 text-dark">Đã bán: {product.sold}</p>
       </div>
       <p className={clsx([style['product-name']])}>{product.name}</p>
       {/* <h6 className="text-dark d-flex ml-3">Tác giả: {product.author}</h6> */}

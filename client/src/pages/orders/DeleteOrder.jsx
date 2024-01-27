@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import React from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 function DeleteOrder({ order_id, status }) {
@@ -9,7 +8,7 @@ function DeleteOrder({ order_id, status }) {
     try {
       await axiosPrivate.request({
         method: status === 'pending' ? 'DELETE' : 'PUT',
-        url: status === 'pending' ? `/order/${order_id}` : `/order//${order_id}/confirm_complete`,
+        url: status === 'pending' ? `/order/${order_id}` : `/order/${order_id}/confirm_complete`,
       });
       window.location.reload();
     } catch (error) {

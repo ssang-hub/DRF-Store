@@ -5,15 +5,15 @@ import Header from '../../components/header';
 import Slider from '../../components/slider';
 import axios from '../../api/axios';
 import Product from '../../components/product';
-// import { host } from "../../store/variable";
 import { useState } from 'react';
+import Pagination from '../../components/pagination';
 const Home = () => {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState({ results: [] });
   useEffect(() => {
     const getAllProducts = async () => {
       try {
         const { data } = await axios.get(`/product/`);
-        setProducts(data.results);
+        setProducts(data);
       } catch (error) {
         console.log(error);
       }
@@ -28,11 +28,14 @@ const Home = () => {
         <Category />
         <Slider />
         <div className="container d-flex flex-wrap ">
-          {products.map((product) => (
+          {products.results.map((product) => (
             <div key={product.id} className="m-auto">
               <Product product={product} />;
             </div>
           ))}
+        </div>
+        <div className="container">
+          <Pagination setItems={setProducts} items={products} />
         </div>
         <Footer />
       </div>

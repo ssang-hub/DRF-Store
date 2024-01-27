@@ -1,6 +1,15 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from '../../api/axios';
 
-function Container({ handleSubmit, changeProductData, product }) {
+function Container({ handleSubmit, changeProductData, product, isLoading }) {
+  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    const getCategories = async () => {
+      const { data } = await axios.get('/product/get_all_categories');
+      setCategories(data);
+    };
+    getCategories();
+  }, []);
   return (
     <div>
       {' '}
@@ -47,27 +56,12 @@ function Container({ handleSubmit, changeProductData, product }) {
                     changeProductData(e);
                   }}
                 >
-                  <option value={'Truyện thiếu nhi'} selected={product.category === 'Truyện thiếu nhi'}>
-                    Truyện thiếu nhi
-                  </option>
-                  <option value={'Truyện phiêu lưu'} selected={product.category === 'Truyện phiêu lưu'}>
-                    Truyện phiêu lưu
-                  </option>
-                  <option value={'Truyện bí ẩn'} selected={product.category === 'Truyện bí ẩn'}>
-                    Truyện bí ẩn
-                  </option>
-                  <option value={'Truyện tâm lý'} selected={product.category === 'Truyện tâm lý'}>
-                    Truyện tâm lý
-                  </option>
-                  <option value={'Truyện tình cảm'} selected={product.category === 'Truyện tình cảm'}>
-                    Truyện tình cảm
-                  </option>
-                  <option value={'Truyện cười'} selected={product.category === 'Truyện cười'}>
-                    Truyện cười
-                  </option>
-                  <option value={'Khác'} selected={product.category === 'Khác'}>
-                    Khác
-                  </option>
+                  <option value={''}>____________Chọn loại sản phẩm__________</option>
+                  {categories.map((item) => (
+                    <option key={item.id} value={item.category_name} selected={product.category === item.category_name}>
+                      {item.category_name}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div className="form-outline mb-4">
@@ -87,8 +81,14 @@ function Container({ handleSubmit, changeProductData, product }) {
             </div>
           </div>
         </div>
-        <button type="submit" className="btn btn-outline-success">
-          Lưu lại
+        <button type="submit" className="btn btn-outline-success" disabled={isLoading}>
+          {isLoading ? (
+            <div class="spinner-border text-success" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          ) : (
+            'Lưu lại'
+          )}
         </button>
       </form>
     </div>

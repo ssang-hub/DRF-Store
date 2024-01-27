@@ -1,17 +1,19 @@
 from django.shortcuts import render
 
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework import generics
 from rest_framework.response import Response
 
 from store.pagination import LargeResultsSetPagination
-from store.models import Product, ProductReview
-from .serializers import ProductSerializer, ProductRetrieveSerializer, ProductReviewSerializer
+from store.models import Product, ProductReview, Category
+from .serializers import ProductSerializer, ProductRetrieveSerializer, ProductReviewSerializer, CategorySerializer
 from rest_framework.permissions import IsAdminUser
 from store.permissions import ProductReviewPermission
 from rest_framework.decorators import action
+from django.conf import settings
+
 # Create your views here.
 import cloudinary
 
@@ -67,6 +69,23 @@ class ProductViewAdmin(viewsets.ModelViewSet):
         product.delete()
         return Response('delete success', status=status.HTTP_204_NO_CONTENT)
 
+    @action(methods=['post'], detail=False)
+    def create_category(self, request, *args, **kwargs):
+        serializer = CategorySerializer(data=request.data)
+        serializer.is_valid()
+        serializer.save()
+        return Response('create category success', status=status.HTTP_201_CREATED)
+
+    @action(methods=['put'], detail=True)
+    def delete_avatar(self, request, *args, **kwargs):
+        product = self.get_object()
+        cloudinary.uploader.destroy(product.public_id_avatar, resource_type="image", type="upload")
+        product.public_id_avatar=""
+        product.avatar=settings.DEFAULT_IMAGE_PRODUCT
+        product.save()
+        return Response('delete avatar success')
+
+
 class ProductViewUser(viewsets.GenericViewSet, generics.ListAPIView, generics.RetrieveAPIView):
     permission_classes = [AllowAny]
     serializer_class = ProductSerializer
@@ -93,7 +112,13 @@ class ProductViewUser(viewsets.GenericViewSet, generics.ListAPIView, generics.Re
             return Response(prduct_serializer.data)
         else:
             return Response("No query provided", status=status.HTTP_400_BAD_REQUEST)
-
+   
+    @action(methods=['get'], detail=False)
+    def get_all_categories(self, request, *args, **kwargs):
+        categories = Category.objects.all()
+        serializer = CategorySerializer(categories, many=True)
+        return Response(serializer.data)
+        
 class ProductReviewView(viewsets.GenericViewSet,generics.ListCreateAPIView, generics.DestroyAPIView, generics.UpdateAPIView):
     permission_classes = [ProductReviewPermission]
     serializer_class = ProductReviewSerializer

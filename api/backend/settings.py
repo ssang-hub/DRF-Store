@@ -28,7 +28,6 @@ SECRET_KEY = 'django-insecure-l%pq5js(pwe_au+b(*z-i#ibk6dtr1c@4o-9f$%b2(pvc8%186
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [config('ALLOWED_HOSTS')]
 
 
 # Application definition
@@ -57,8 +56,10 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
 ]
 CORS_ALLOWED_ORIGINS = [
-    config('CLIENT_HOST')
+    config('ALLOWED_HOSTS')
 ]
+
+ALLOWED_HOSTS = [config('ALLOWED_HOSTS'), 'localhost']
 
 
 ROOT_URLCONF = 'backend.urls'
@@ -186,6 +187,7 @@ cloudinary.config(
   api_key=config('CLOUDINARY_API_KEY'),
   api_secret=config('CLOUDINARY_API_SECRET')
 )
+DEFAULT_IMAGE_PRODUCT = config('DEFAULT_IMAGE_PRODUCT')
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 

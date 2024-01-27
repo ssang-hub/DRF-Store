@@ -1,4 +1,4 @@
-const ProductInfo = () => {
+const ProductInfo = ({ product }) => {
   return (
     <>
       <div className="container mt-5">
@@ -15,11 +15,7 @@ const ProductInfo = () => {
               <div className="m-3 d-flex">Ngày xuất bản</div>
             </div>
             <div className="col-xl-6">
-              {/* <div className="m-3 d-flex">{product.author}</div> */}
-              {/* <div className="m-3 d-flex">{product.category}</div> */}
-              {/* <div className="m-3 d-flex">{product.numberPage}</div> */}
               <div className="m-3 d-flex">Bìa mềm</div>
-              {/* <div className="m-3 d-flex">{product.date}</div> */}
             </div>
           </table>
         </div>
@@ -28,7 +24,7 @@ const ProductInfo = () => {
         <div className="light-color w-50">
           <div className="p-5">
             <h4 className="d-flex">Mô Tả Sản Phẩm</h4>
-            {/* <div className="d-flex"> {product.description}</div> */}
+            <div>{product.detail}</div>
           </div>
         </div>
       </div>

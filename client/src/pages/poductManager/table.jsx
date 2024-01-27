@@ -1,46 +1,31 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 import { useSelector } from 'react-redux';
 import { authSelector } from '../../store/selectors';
 
-function Conttainer({ products }) {
-  //
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+function ProductTable({ products }) {
   const [deleteProductID, setDeleteProductID] = useState(undefined);
   const authState = useSelector(authSelector);
-
-  const navigate = useNavigate();
+  const [isDeleteLoading, setIsDeleteLoading] = useState(false);
 
   const axiosPrivate = useAxiosPrivate();
 
-  const handleDelete = () => {
-    const deleteAction = async () => {
-      try {
-        await axiosPrivate.request({
-          method: 'DELETE',
-          url: '/deleteProduct',
-          data: {
-            id: deleteProductID,
-          },
-        });
-        // await axios({
-        //   method: "delete",
-        //   url: "/deleteProduct",
-        //   headers: {
-        //     Authorization: `Bearer ${JSON.parse(localStorage.getItem()).accessToken}`,
-        //   },
-        //   data: {
-        //     id: deleteProductID,
-        //   },
-        // });
-        navigate('/');
-      } catch (error) {
-        console.log('error');
-      }
-    };
-    deleteAction();
-    navigate('/productmanager');
+  const handleDelete = async () => {
+    try {
+      setIsDeleteLoading(true);
+      await axiosPrivate.delete(`/product/product_admin//${deleteProductID}`);
+      toast.success('Xóa sản phẩm thành công', { position: 'bottom-right' });
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
+    } catch (error) {
+      console.log('error');
+    }
+    setIsDeleteLoading(false);
   };
 
   return (
@@ -50,29 +35,25 @@ function Conttainer({ products }) {
           <div className="d-flex">
             <div className="container">
               <div className="row">
-                <h1>List Products</h1>
+                <h1>Danh sách sản phẩm</h1>
               </div>
               <table className="table table-striped table-bordered">
                 <thead className="table-dark">
                   <tr>
-                    <th>Mã Sách</th>
-                    <th>Tiêu đề</th>
-                    <th>Tác giả</th>
-                    <th>Thể loại</th>
-                    <th>Ngày xuất bản</th>
-                    <th>Số trang</th>
-                    {authState.isAuthenticated && <th>Hành động</th>}
+                    <th>Mã sản phẩm</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Loại sản phẩm</th>
+                    <th>Gía bán</th>
+                    {authState.isAuthenticated && <th>Thao tác</th>}
                   </tr>
                 </thead>
                 <tbody className="table-dark">
                   {products.map((product) => (
                     <tr key={product.id}>
                       <th>{product.id}</th>
-                      <th>{product.title}</th>
-                      <th>{product.author}</th>
+                      <th>{product.name}</th>
                       <th>{product.category}</th>
-                      <th>{product.date}</th>
-                      <th>{product.numberPage}</th>
+                      <th>{product.price}</th>
                       {authState.isAuthenticated && (
                         <th>
                           <div className="d-flex">
@@ -105,7 +86,7 @@ function Conttainer({ products }) {
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="modal-title" id="exampleModalLongTitle">
-                    Xóa Sách
+                    Xóa Sản Phẩm
                   </h5>
                   <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -116,17 +97,24 @@ function Conttainer({ products }) {
                   <button type="button" className="btn btn-secondary" data-dismiss="modal">
                     Thoát
                   </button>
-                  <button type="button" className="btn btn-outline-danger" data-dismiss="modal" onClick={handleDelete}>
-                    Xóa
+                  <button type="button" className="btn btn-outline-danger" disabled={isDeleteLoading} onClick={handleDelete}>
+                    {isDeleteLoading ? (
+                      <div class="spinner-border text-danger" role="status">
+                        <span class="sr-only">Loading...</span>
+                      </div>
+                    ) : (
+                      'Xóa'
+                    )}
                   </button>
                 </div>
               </div>
             </div>
           </div>
+          <ToastContainer />
         </div>
       )}
     </>
   );
 }
 
-export default Conttainer;
+export default ProductTable;

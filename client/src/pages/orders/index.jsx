@@ -1,7 +1,5 @@
 import clsx from 'clsx';
-import React from 'react';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Header from '../../components/header';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import style from './style.module.scss';
@@ -28,7 +26,6 @@ function MyOrders() {
   useEffect(() => {
     const getOrders = async () => {
       const { data } = await axiosPrivate.request({ method: 'GET', url: `/order/`, params: { status: status } });
-      // const order_objects = Object.keys(data).map((key) => data[key]);
       setOrders(data.results);
     };
     getOrders();

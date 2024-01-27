@@ -16,6 +16,7 @@ function CreateProduct({ option }) {
   const [file, setFile] = useState(undefined);
   const [image, setImage] = useState(process.env.REACT_APP_DEFAULT_IMAGE_PRODUCT);
   const [product, setProduct] = useState({ name: '', price: 0 });
+  const [isLoading, setIsloading] = useState(false);
 
   const axiosPrivate = useAxiosPrivate();
 
@@ -32,11 +33,11 @@ function CreateProduct({ option }) {
     if (option) {
       const getProduct = async () => {
         try {
-          const { data } = await axiosPrivate.get(`/editproduct/${id}`);
+          const { data } = await axiosPrivate.get(`/product/${id}`);
           setProduct(data);
           setImage(data.avatar);
         } catch (error) {
-          toast.error('Error message: ', { position: 'bottom-right', theme: 'dark' });
+          toast.error('Không tìm thấy sản phẩm', { position: 'bottom-right', theme: 'dark' });
         }
       };
       getProduct();
@@ -65,19 +66,14 @@ function CreateProduct({ option }) {
 
   const deleteImage = async () => {
     try {
-      axiosPrivate.request({
-        method: 'DELETE',
-        url: '/deleteImage',
-        data: {
-          image: image.slice(29, image.length),
-        },
-      });
+      await axiosPrivate.put(`/product/product_admin//${id}/delete_avatar`);
     } catch (error) {}
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setIsloading(true);
       const { data } = await axiosPrivate.request({
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -89,11 +85,13 @@ function CreateProduct({ option }) {
           file: file,
         },
       });
-      navigate('/');
-    } catch (error) {
-      toast.error('Sách đã tồn tại', {
+      setIsloading(false);
+      toast.success('Thêm sản phẩm thành công', {
         position: 'bottom-right',
-        theme: 'dark',
+      });
+    } catch (error) {
+      toast.error('Sản phẩm đã tồn tại', {
+        position: 'bottom-right',
       });
     }
   };
@@ -107,10 +105,17 @@ function CreateProduct({ option }) {
         </div>
         <div className="col-xl-8 d-flex" style={{ marginTop: '100px', marginBottom: '100px' }}>
           {/* container form */}
-          <Container handleSubmit={handleSubmit} changeProductData={changeProductData} product={product} />
+          <Container handleSubmit={handleSubmit} changeProductData={changeProductData} product={product} isLoading={isLoading} />
           <div style={{ marginLeft: '50px' }}>
             <button className="form-outline mb-4 btn btn-outline-primary">
-              <input type="file" className="form-control form-control-lg" id="upload-image-user" name="image" onChange={(e) => hadleChangeAvatar(e)} hidden />
+              <input
+                type="file"
+                className="form-control form-control-lg"
+                id="upload-image-user"
+                name="image"
+                onChange={(e) => hadleChangeAvatar(e)}
+                hidden
+              />
               <label htmlFor="upload-image-user" id="upload-image-label" className="btn-image-user m-0">
                 Chọn File
               </label>

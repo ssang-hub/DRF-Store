@@ -42,6 +42,10 @@ class OrderView(viewsets.GenericViewSet, generics.ListCreateAPIView, generics.De
             order_items_serializer = OrderItemSummarySerializer(data=order_items, many=True)
             order_items_serializer.is_valid(raise_exception=True)
             order_items_serializer.save(order=new_order)
+            
+            for i in range(len(cart_items)):
+                cart_items[i].product.sold += cart_items[i].quantity
+                cart_items[i].product.save() 
             #
             """after an order created, delete all cart items"""
             cart_items.delete()

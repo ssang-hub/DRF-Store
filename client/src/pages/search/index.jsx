@@ -6,19 +6,20 @@ import Footer from '../../components/footer';
 import Header from '../../components/header';
 import Slider from '../../components/slider';
 import Product from '../../components/product';
+import Pagination from '../../components/pagination';
 import { useParams } from 'react-router-dom';
 
 const SearchPage = () => {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState({ results: [] });
   const { key } = useParams();
   useEffect(() => {
     const searchProducts = async () => {
-      console.log('key' + key);
       const { data } = await axios.get('/product/search_products', { params: { key } });
-      setProducts(data.results);
+      setProducts(data);
     };
     searchProducts();
   }, [key]);
+
   return (
     <>
       <div>
@@ -27,12 +28,13 @@ const SearchPage = () => {
         <Category />
         <Slider />
         <div className="container d-flex flex-wrap ">
-          {products.map((product) => (
+          {products.results.map((product) => (
             <div key={product.id} className="m-auto">
               <Product product={product} />;
             </div>
           ))}
         </div>
+        <Pagination items={products} />
         <Footer />
       </div>
     </>

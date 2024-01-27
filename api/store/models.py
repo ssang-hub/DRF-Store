@@ -54,7 +54,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Product(models.Model):
     name = models.CharField(max_length=250, null=False)
     price = models.IntegerField(null=False)
-    avatar = models.CharField(max_length=100, null=False, default="")
+    avatar = models.CharField(max_length=100, null=False, default=settings.DEFAULT_IMAGE_PRODUCT)
     public_id_avatar = models.CharField(max_length=50, null=False, default="")
     detail = models.CharField(max_length=5000, default="")
     category = models.CharField(max_length=500, default="")
@@ -71,6 +71,10 @@ class Product(models.Model):
     @property
     def get_price(self):
         return self.price
+    
+class Category(models.Model):
+    category_name = models.CharField(max_length=500, default="")
+    created_time = models.DateTimeField(auto_now_add=True)
 
 
 class Order(models.Model):

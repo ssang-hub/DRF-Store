@@ -85,7 +85,13 @@ function MyCart() {
                         <tr className="d-flex my-5 " key={item.id}>
                           <div className="form-check">
                             <td className="center-itemCart border-0">
-                              <input className="mr-4 " type="checkbox" defaultChecked onChange={(e) => selectCartItem(e, item.id)} />
+                              <input
+                                className="mr-4 "
+                                style={{ marginTop: 40 }}
+                                type="checkbox"
+                                defaultChecked
+                                onChange={(e) => selectCartItem(e, item.id)}
+                              />
                             </td>
                           </div>
                           <td className="center-itemCart border-0">

@@ -1,4 +1,3 @@
-import React from 'react';
 import { useEffect, useState } from 'react';
 import Header from '../../components/header';
 import Sidebar from '../../components/managerSidebar';
@@ -15,10 +14,8 @@ function ManageOrder() {
   useEffect(() => {
     const getOrders = async () => {
       const data = await axiosPrivate.request({ method: 'GET', url: `/AllOrders` });
-      // data.data
       const temp = Object.keys(data.data).map((key) => data.data[key]);
       setOrders(temp);
-      console.log(temp);
     };
     getOrders();
   }, [option]);
