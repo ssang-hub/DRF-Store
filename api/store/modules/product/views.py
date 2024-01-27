@@ -118,6 +118,12 @@ class ProductViewUser(viewsets.GenericViewSet, generics.ListAPIView, generics.Re
         categories = Category.objects.all()
         serializer = CategorySerializer(categories, many=True)
         return Response(serializer.data)
+    
+    @action(methods=['get'], detail=False)
+    def get_all_categories(self, request, *args, **kwargs):
+        categories = Category.objects.all()
+        serializer = CategorySerializer(categories, many=True)
+        return Response(serializer.data)
         
 class ProductReviewView(viewsets.GenericViewSet,generics.ListCreateAPIView, generics.DestroyAPIView, generics.UpdateAPIView):
     permission_classes = [ProductReviewPermission]
