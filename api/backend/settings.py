@@ -56,10 +56,11 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
 ]
 CORS_ALLOWED_ORIGINS = [
-    config('ALLOWED_HOSTS')
+    config('ALLOWED_HOSTS'),
+    config('DOMAIN_NAME')
 ]
 
-ALLOWED_HOSTS = [config('ALLOWED_HOSTS'), 'localhost']
+ALLOWED_HOSTS = [config('ALLOWED_HOSTS'), 'localhost', 'backend', config('DOMAIN_NAME')]
 
 
 ROOT_URLCONF = 'backend.urls'
